@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub</title>
+    <style>
+        /* Background image styling */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-image: url('images/background.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Title styling */
+        .title {
+            position: fixed;
+            top: 20px;
+            font-size: 4rem; /* Increased title font size */
+            text-align: center;
+            text-decoration: underline;
+            width: 100%;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Container styling for icons */
+        .container {
+            margin-top: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* Grid layout for the icons */
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px; /* Increased gap for larger buttons */
+            align-items: center;
+            justify-items: center;
+        }
+
+        /* Styling for each game button */
+        .game-button {
+            width: 250px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 22px;
+            color: white;
+            background-color: rgba(51, 51, 51, 0.8);
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            text-align: center;
+            padding: 15px;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-button img {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            width: 300px;
+        }
+
+        .modal-buttons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .modal-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .confirm-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Title at the top of the page -->
+    <div class="title">Gaming Hub</div>
+
+    <!-- Container to center icons -->
+    <div class="container">
+        <!-- Grid for game buttons -->
+        <div class="button-grid">
+            <button class="game-button" onclick="showModal('Tic-Tac-Toe')">
+                <img src="images/tic-tac-toe.png" alt="Tic-Tac-Toe Icon">
+                Play Tic Tac Toe
+            </button>
+
+            <button class="game-button" onclick="showModal('Snake')">
+                <img src="images/snake.png" alt="Snake Icon">
+                Play Snake
+            </button>
+
+            <button class="game-button" onclick="showModal('Car Game')">
+                <img src="images/car-game.png" alt="Car Game Icon">
+                Play Car Game
+            </button>
+
+            <button class="game-button" onclick="showModal('Flappy Bird')">
+                <img src="images/flappy-bird.png" alt="Flappy Bird Icon">
+                Play Flappy Bird
+            </button>
+        </div>
+    </div>
+
+    <!-- Custom confirmation modal -->
+    <div id="customConfirmModal" class="modal">
+        <div class="modal-content">
+            <p id="modalText">Do you want to play this game?</p>
+            <div class="modal-buttons">
+                <button class="modal-button confirm-button" onclick="startGame()">Yes</button>
+                <button class="modal-button cancel-button" onclick="closeModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedGame = '';
+
+        function showModal(gameName) {
+            selectedGame = gameName;
+            document.getElementById("modalText").innerText = `Do you want to play ${gameName}?`;
+            document.getElementById("customConfirmModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("customConfirmModal").style.display = "none";
+        }
+
+        function startGame() {
+            closeModal();
+            let url = '';
+
+            // Set the correct URL based on the selected game
+            switch(selectedGame) {
+                case 'Tic-Tac-Toe':
+                    url = 'http://localhost:5000/start-tic-tac-toe';
+                    break;
+                case 'Snake':
+                    url = 'http://localhost:5000/start-snake';
+                    break;
+                case 'Car Game':
+                    url = 'http://localhost:5000/start-car-game';
+                    break;
+                case 'Flappy Bird':
+                    url = 'http://localhost:5000/start-flappy-bird';
+                    break;
+            }
+
+            // Fetch request to start the game
+            fetch(url)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
